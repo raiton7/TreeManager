@@ -48,5 +48,10 @@ namespace TreeManager.Database
         {
             return nodeContext.Node.Find(id);
         }
+
+        public void Dispose()
+        {
+            nodeContext.Dispose();
+        }
     }
 }

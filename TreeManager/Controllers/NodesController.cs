@@ -13,13 +13,12 @@ namespace TreeManager.Controllers
 {
     public class NodesController : Controller
     {
-        private NodeContext db = new NodeContext();
+        private readonly NodeRepository nodeRepository = new NodeRepository();
 
         // GET: Nodes
         public ActionResult Index()
         {
-            var node = db.Node.Include(n => n.Node2);
-            return View(node.ToList());
+            return View(nodeRepository.FindAll());
         }
 
         // GET: Nodes/Details/5
@@ -29,7 +28,7 @@ namespace TreeManager.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Node node = db.Node.Find(id);
+            Node node = nodeRepository.FindById(Convert.ToInt32(id));
             if (node == null)
             {
                 return HttpNotFound();
@@ -40,7 +39,7 @@ namespace TreeManager.Controllers
         // GET: Nodes/Create
         public ActionResult Create()
         {
-            ViewBag.IdParent = new SelectList(db.Node, "Id", "Value");
+            ViewBag.IdParent = new SelectList(nodeRepository.FindAll(), "Id", "Value");
             return View();
         }
 
@@ -53,12 +52,11 @@ namespace TreeManager.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Node.Add(node);
-                db.SaveChanges();
+                nodeRepository.Add(node);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.IdParent = new SelectList(db.Node, "Id", "Value", node.IdParent);
+            ViewBag.IdParent = new SelectList(nodeRepository.FindAll(), "Id", "Value", node.IdParent);
             return View(node);
         }
 
@@ -69,12 +67,12 @@ namespace TreeManager.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Node node = db.Node.Find(id);
+            Node node = nodeRepository.FindById(Convert.ToInt32(id));
             if (node == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.IdParent = new SelectList(db.Node, "Id", "Value", node.IdParent);
+            ViewBag.IdParent = new SelectList(nodeRepository.FindAll(), "Id", "Value", node.IdParent);
             return View(node);
         }
 
@@ -87,11 +85,10 @@ namespace TreeManager.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(node).State = EntityState.Modified;
-                db.SaveChanges();
+                nodeRepository.Update(node);
                 return RedirectToAction("Index");
             }
-            ViewBag.IdParent = new SelectList(db.Node, "Id", "Value", node.IdParent);
+            ViewBag.IdParent = new SelectList(nodeRepository.FindAll(), "Id", "Value", node.IdParent);
             return View(node);
         }
 
@@ -102,7 +99,7 @@ namespace TreeManager.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Node node = db.Node.Find(id);
+            Node node = nodeRepository.FindById(Convert.ToInt32(id));
             if (node == null)
             {
                 return HttpNotFound();
@@ -115,9 +112,7 @@ namespace TreeManager.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Node node = db.Node.Find(id);
-            db.Node.Remove(node);
-            db.SaveChanges();
+            nodeRepository.DeleteById(id);
             return RedirectToAction("Index");
         }
 
@@ -125,7 +120,7 @@ namespace TreeManager.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                nodeRepository.Dispose();
             }
             base.Dispose(disposing);
         }

@@ -18,7 +18,7 @@ namespace TreeManager.Database
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Node>()
-                .HasMany(e => e.Node1)
+                .HasMany(e => e.ChildNodes)
                 .WithOptional(e => e.Node2)
                 .HasForeignKey(e => e.IdParent);
         }

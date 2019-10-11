@@ -12,7 +12,7 @@ namespace TreeManager.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Node()
         {
-            Node1 = new HashSet<Node>();
+            ChildNodes = new HashSet<Node>();
         }
 
         [Display(Name = "ID")]
@@ -20,14 +20,14 @@ namespace TreeManager.Models
 
         [Column(TypeName = "ntext")]
         [Required]
-        [Display(Name = "Wartoœæ")]
+        [Display(Name = "Nazwa")]
         public string Value { get; set; }
 
         [Display(Name = "ID Rodzica")]
         public int? IdParent { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Node> Node1 { get; set; }
+        public virtual ICollection<Node> ChildNodes { get; set; }
 
         public virtual Node Node2 { get; set; }
     }
