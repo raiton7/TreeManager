@@ -15,12 +15,15 @@ namespace TreeManager.Models
             Node1 = new HashSet<Node>();
         }
 
+        [Display(Name = "ID")]
         public int Id { get; set; }
 
         [Column(TypeName = "ntext")]
         [Required]
+        [Display(Name = "Wartoœæ")]
         public string Value { get; set; }
 
+        [Display(Name = "ID Rodzica")]
         public int? IdParent { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
