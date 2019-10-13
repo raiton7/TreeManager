@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 using TreeManager.Database;
 using TreeManager.Models;
 
@@ -72,7 +73,10 @@ namespace TreeManager.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.IdParent = new SelectList(nodeRepository.FindAll(), "Id", "Value", node.IdParent);
+            if (node.IdParent == null)
+                ViewBag.IdParent = new SelectList(new List<int>());
+            else
+                ViewBag.IdParent = new SelectList(nodeRepository.FindAll(), "Id", "Value", node.IdParent);
             return View(node);
         }
 
@@ -83,6 +87,9 @@ namespace TreeManager.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,Value,IdParent")] Node node)
         {
+            Node oldNode = nodeRepository.FindById(node.Id);
+            if (oldNode.IdParent == null && node.IdParent != null)
+                node.IdParent = null;
             if (ModelState.IsValid)
             {
                 nodeRepository.Update(node);
@@ -112,7 +119,7 @@ namespace TreeManager.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            nodeRepository.DeleteById(id);
+            nodeRepository.CascadeDeleteById(id);
             return RedirectToAction("Index");
         }
 

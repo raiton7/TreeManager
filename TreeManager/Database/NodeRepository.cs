@@ -53,5 +53,23 @@ namespace TreeManager.Database
         {
             nodeContext.Dispose();
         }
+
+        public void CascadeDeleteById(int id)
+        {
+            Node nodeToDelete = nodeContext.Node.Find(id);
+            List<Node> nodes = nodeToDelete.ChildNodes.ToList();
+            int nodesCountToDelete = nodeToDelete.ChildNodes.Count;
+            if (nodeToDelete.ChildNodes.Count > 0)
+            {
+                for (int i = 0; i < nodesCountToDelete; i++)
+                {
+                    CascadeDeleteById(nodes[i].Id);
+                }   
+            }
+            if (nodeToDelete.ChildNodes.Count == 0)
+            {
+                DeleteById(nodeToDelete.Id);
+            }
+        }
     }
 }

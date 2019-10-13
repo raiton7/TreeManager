@@ -1,10 +1,8 @@
 namespace TreeManager.Models
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
     [Table("Node")]
     public partial class Node
@@ -19,8 +17,7 @@ namespace TreeManager.Models
         public int Id { get; set; }
 
         [Column(TypeName = "ntext")]
-        [Required]
-        [Display(Name = "Nazwa")]
+        [Required, Display(Name = "Nazwa"), MinLength(2, ErrorMessage = "D³ugoœæ nazwy musi byæ wiêksza lub równa 2")]
         public string Value { get; set; }
 
         [Display(Name = "ID Rodzica")]
