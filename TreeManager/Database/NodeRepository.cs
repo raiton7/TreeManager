@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using TreeManager.Models;
+using jsTree3.Models;
 
 namespace TreeManager.Database
 {
@@ -70,6 +71,65 @@ namespace TreeManager.Database
             {
                 DeleteById(nodeToDelete.Id);
             }
+        }
+
+        public List<NodeToJSON> ConvertModelBeforeSerialize()
+        {
+            List<Node> nodes = FindAll().ToList();
+            List<NodeToJSON> nodesToJSON = Convert(nodes);
+            return nodesToJSON;
+        }
+
+        private List<NodeToJSON> Convert(List<Node> nodes)
+        {
+            List<NodeToJSON> nodesToJSON = new List<NodeToJSON>();
+            foreach (Node node in nodes)
+            {
+                NodeToJSON nodeToJSON = new NodeToJSON();
+                nodeToJSON.text = node.Value;
+                if (node.ChildNodes.Count == 0)
+                {
+                    nodeToJSON.children = new List<NodeToJSON>();
+                }
+                else
+                {
+                    nodeToJSON.children = Convert(node.ChildNodes.ToList());
+                }
+                nodesToJSON.Add(nodeToJSON);
+            }
+            return nodesToJSON;
+        }
+
+        public List<JsTree3Node> ConvertModelToJS3Tree()
+        {
+            List<Node> nodes = FindAll().ToList();
+            List<JsTree3Node> nodesToJSON = ConvertJS3Tree(nodes);
+            return nodesToJSON;
+        }
+
+        private List<JsTree3Node> ConvertJS3Tree(List<Node> nodes)
+        {
+            List<JsTree3Node> nodesToJSON = new List<JsTree3Node>();
+            foreach (Node node in nodes)
+            {
+                JsTree3Node nodeToJSON = new JsTree3Node
+                {
+                    id = node.Id.ToString(),
+                    text = node.Value,
+                    state = new jsTree3.Models.State(true, false, false)
+                   
+                };
+                if (node.ChildNodes.Count == 0)
+                {
+                    nodeToJSON.children = new List<JsTree3Node>();
+                }
+                else
+                {
+                    nodeToJSON.children = ConvertJS3Tree(node.ChildNodes.ToList());
+                }
+                nodesToJSON.Add(nodeToJSON);
+            }
+            return nodesToJSON;
         }
     }
 }

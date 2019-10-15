@@ -12,6 +12,7 @@ using TreeManager.Models;
 
 namespace TreeManager.Controllers
 {
+    [Authorize]
     public class NodesController : Controller
     {
         private readonly NodeRepository nodeRepository = new NodeRepository();
@@ -76,7 +77,11 @@ namespace TreeManager.Controllers
             if (node.IdParent == null)
                 ViewBag.IdParent = new SelectList(new List<int>());
             else
-                ViewBag.IdParent = new SelectList(nodeRepository.FindAll(), "Id", "Value", node.IdParent);
+            {
+                List<Node> nodes = nodeRepository.FindAll().ToList();
+                nodes.Remove(node);
+                ViewBag.IdParent = new SelectList(nodes, "Id", "Value", node.IdParent);
+            }
             return View(node);
         }
 
@@ -90,6 +95,9 @@ namespace TreeManager.Controllers
             Node oldNode = nodeRepository.FindById(node.Id);
             if (oldNode.IdParent == null && node.IdParent != null)
                 node.IdParent = null;
+            if (node.IdParent == node.Id)
+                node.IdParent = oldNode.IdParent;
+
             if (ModelState.IsValid)
             {
                 nodeRepository.Update(node);

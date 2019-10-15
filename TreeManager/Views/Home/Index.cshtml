@@ -1,35 +1,21 @@
-﻿@{
+﻿@model jsTree3.Models.JsTree3Node
+
+@{
     ViewBag.Title = "Start";
 }
-<!--
-<link href="~/Content/TreeStyle.css" rel="stylesheet" />
 
-<br />
-<ul id="myUL">
-    <li>
-        <span class="caret">Beverages</span>
-        <ul class="nested">
-            <li>Water</li>
-            <li>Coffee</li>
-            <li>
-                <span class="caret">Tea</span>
-                <ul class="nested">
-                    <li>Black Tea</li>
-                    <li>White Tea</li>
-                    <li>
-                        <span class="caret">Green Tea</span>
-                        <ul class="nested">
-                            <li>Sencha</li>
-                            <li>Gyokuro</li>
-                            <li>Matcha</li>
-                            <li>Pi Lo Chun</li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </li>
-</ul>
+@Styles.Render("~/Content/jstree")
 
-<script src="~/Scripts/TreeScript.js"></script>
--->
+<h1>Aktualna struktura drzewa:</h1>
+<div id="datadb"></div>
+
+
+@Scripts.Render("~/bundles/jstree")
+
+<script>
+    $('#datadb').jstree({
+        'core': {
+            'data':@Html.Raw(Json.Encode(Model))
+        }
+    });
+</script>
