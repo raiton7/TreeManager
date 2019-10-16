@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TreeManager.Models.Node>
+﻿@model jsTree3.Models.JsTree3Node
 
 @{
     ViewBag.Title = "Drzewo";
@@ -7,39 +7,57 @@
 
 <h2>@ViewBag.Title</h2>
 
-<p>
-    @Html.ActionLink("Dodaj nowy węzeł", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Id)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Value)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IdParent)
-        </th>
-        <th></th>
-    </tr>
+@Styles.Render("~/Content/jstree")
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Value)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IdParent)
-        </td>
-        <td>
-            @Html.ActionLink("Edytuj", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Szczegóły", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Usuń", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
-</table>
+<p>
+    @Html.ActionLink("Dodaj nowy węzeł", "Create") <br />
+    @Html.ActionLink("Tabela wszystkich węzłów", "Table")
+</p>
+<p>Wskazówka: Wciśnij dwukrotnie na węzeł, aby zobaczyć jego szczegółowe dane</p>
+
+<div id="treeManage"></div>
+@Scripts.Render("~/bundles/jstree")
+
+<!--/Views/Nodes/Index-->
+<script>
+    $.jstree.defaults.core.themes.variant = "large";
+    $('#treeManage').jstree({
+        'core': {
+            'check_callback': CheckOperation(),
+            'data':@Html.Raw(Json.Encode(Model)),
+        },
+        'plugins': ['dnd']
+    }).bind("move_node.jstree", function (e, data) {
+        //data.node was dragged and dropped on data.parent
+    });
+
+    function CheckOperation(operation, node, parent, position, more) {
+        if (operation == "move_node") {
+            return true;
+        }
+        else if (operation == "create_node") {
+            return false;
+        }
+        else if (operation == "rename_node") {
+            return false;
+        }
+        else if (operation == "delete_node") {
+            return false;
+        }
+        else if (operation == "copy_node") {
+            return false;
+        }
+        else if (operation == "edit") {
+            return false;
+        }
+        else
+            return true;
+    }
+
+    $('#treeManage').bind("dblclick.jstree", ".jstree-anchor", $.proxy(function (e) {
+        var node = $(e.target).closest("li");
+        var id = node[0].id; //id of the selected node
+        window.open("./Nodes/Details/" + id, "_top");
+    }));
+
+</script>

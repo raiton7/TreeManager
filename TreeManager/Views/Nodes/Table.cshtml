@@ -1,0 +1,57 @@
+﻿@model IEnumerable<TreeManager.Models.Node>
+
+@{
+    ViewBag.Title = "Lista węzłów";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<p>
+    @Html.ActionLink("Dodaj nowy węzeł", "Create") <br />
+    @Html.ActionLink("Wróć do drzewa", "Index")
+</p>
+<div>
+    @using (Html.BeginForm("Table", "Nodes", FormMethod.Get))
+    {
+        <p>
+            Nazwa: @Html.TextBox("SearchString") 
+            <input type="submit" value="Szukaj" />
+        </p>
+    }
+</div>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Value)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IdParent)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Value)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdParent)
+            </td>
+            <td>
+                @Html.ActionLink("Edytuj", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Szczegóły", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Usuń", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+</table>

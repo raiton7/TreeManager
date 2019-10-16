@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using System.Web.UI;
 using TreeManager.Database;
 using TreeManager.Models;
+using jsTree3.Models;
 
 namespace TreeManager.Controllers
 {
@@ -20,7 +21,20 @@ namespace TreeManager.Controllers
         // GET: Nodes
         public ActionResult Index()
         {
-            return View(nodeRepository.FindAll());
+            JsTree3Node jsTree3NodeManage = nodeRepository.ConvertModelToJS3Tree()[0];
+            return View(jsTree3NodeManage);
+        }
+
+        public ActionResult Table(string searchString)
+        {
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                return View(nodeRepository.Search(searchString));
+            }
+            else
+            {
+                return View(nodeRepository.FindAll());
+            }
         }
 
         // GET: Nodes/Details/5

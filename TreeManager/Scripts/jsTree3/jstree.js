@@ -601,9 +601,9 @@
 						this.toggle_node(e.target);
 					}, this))
 				.on("dblclick.jstree", ".jstree-anchor", $.proxy(function (e) {
-						if(this.settings.core.dblclick_toggle) {
-							this.toggle_node(e.target);
-						}
+						//if(this.settings.core.dblclick_toggle) {
+						//	this.toggle_node(e.target);
+						//}
 					}, this))
 				.on("click.jstree", ".jstree-anchor", $.proxy(function (e) {
 						e.preventDefault();

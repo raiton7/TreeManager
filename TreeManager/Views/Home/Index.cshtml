@@ -7,15 +7,18 @@
 @Styles.Render("~/Content/jstree")
 
 <h1>Aktualna struktura drzewa:</h1>
-<div id="datadb"></div>
+<div id="dataView"></div>
 
 
 @Scripts.Render("~/bundles/jstree")
 
+<!--/Views/Home/Index-->
 <script>
-    $('#datadb').jstree({
+    $.jstree.defaults.core.themes.variant = "large";
+    $('#dataView').jstree({
         'core': {
-            'data':@Html.Raw(Json.Encode(Model))
-        }
+            //'check_callback': CheckOperation(),
+            'data':@Html.Raw(Json.Encode(Model)),
+        },
     });
 </script>

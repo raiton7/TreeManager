@@ -50,6 +50,14 @@ namespace TreeManager.Database
             return nodeContext.Node.Find(id);
         }
 
+        public IEnumerable<Node> Search(string searchString)
+        {
+            List<Node> nodes = nodeContext.Node.Where(n => 
+                n.Value.Contains(searchString))
+                .ToList();
+            return nodes;
+        }
+
         public void Dispose()
         {
             nodeContext.Dispose();
@@ -116,8 +124,8 @@ namespace TreeManager.Database
                 {
                     id = node.Id.ToString(),
                     text = node.Value,
-                    state = new jsTree3.Models.State(true, false, false)
-                   
+                    state = new jsTree3.Models.State(true, false, false)//,
+                    //icon = "false"
                 };
                 if (node.ChildNodes.Count == 0)
                 {
