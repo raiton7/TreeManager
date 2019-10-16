@@ -197,7 +197,6 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Database\NodeContext.cs" />
     <Compile Include="Models\Node.cs" />
-    <Compile Include="Models\NodeToJSON.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

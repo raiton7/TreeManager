@@ -81,33 +81,6 @@ namespace TreeManager.Database
             }
         }
 
-        public List<NodeToJSON> ConvertModelBeforeSerialize()
-        {
-            List<Node> nodes = FindAll().ToList();
-            List<NodeToJSON> nodesToJSON = Convert(nodes);
-            return nodesToJSON;
-        }
-
-        private List<NodeToJSON> Convert(List<Node> nodes)
-        {
-            List<NodeToJSON> nodesToJSON = new List<NodeToJSON>();
-            foreach (Node node in nodes)
-            {
-                NodeToJSON nodeToJSON = new NodeToJSON();
-                nodeToJSON.text = node.Value;
-                if (node.ChildNodes.Count == 0)
-                {
-                    nodeToJSON.children = new List<NodeToJSON>();
-                }
-                else
-                {
-                    nodeToJSON.children = Convert(node.ChildNodes.ToList());
-                }
-                nodesToJSON.Add(nodeToJSON);
-            }
-            return nodesToJSON;
-        }
-
         public List<JsTree3Node> ConvertModelToJS3Tree()
         {
             List<Node> nodes = FindAll().ToList();
