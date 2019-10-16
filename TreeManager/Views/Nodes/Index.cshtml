@@ -28,7 +28,8 @@
         },
         'plugins': ['dnd']
     }).bind("move_node.jstree", function (e, data) {
-        //data.node was dragged and dropped on data.parent
+        var movedNodeId = data.node.id;
+        var newParentId = data.parent;
     });
 
     function CheckOperation(operation, node, parent, position, more) {
