@@ -58,7 +58,8 @@
     $('#treeManage').bind("dblclick.jstree", ".jstree-anchor", $.proxy(function (e) {
         var node = $(e.target).closest("li");
         var id = node[0].id; //id of the selected node
-        window.open("./Nodes/Details/" + id, "_top");
+        if (@ViewBag.DbCount > 0)
+            window.open("./Nodes/Details/" + id, "_top");
     }));
 
 </script>

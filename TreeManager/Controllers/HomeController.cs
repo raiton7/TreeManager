@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using TreeManager.Database;
 using jsTree3.Models;
+using System.Collections.Generic;
 
 namespace TreeManager.Controllers
 {
@@ -10,8 +11,11 @@ namespace TreeManager.Controllers
 
         public ActionResult Index()
         {
-            JsTree3Node jsTree3Node = nodeRepository.ConvertModelToJS3Tree()[0];
-            return View(jsTree3Node);
+            List<JsTree3Node> jsTree3Node = nodeRepository.ConvertModelToJS3Tree();
+            if (jsTree3Node.Count > 0)
+                return View(jsTree3Node[0]);
+            else
+                return View(new JsTree3Node());
         }
 
         public ActionResult About()

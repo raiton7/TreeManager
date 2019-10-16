@@ -21,8 +21,12 @@ namespace TreeManager.Controllers
         // GET: Nodes
         public ActionResult Index()
         {
-            JsTree3Node jsTree3NodeManage = nodeRepository.ConvertModelToJS3Tree()[0];
-            return View(jsTree3NodeManage);
+            List<JsTree3Node> jsTree3NodeManage = nodeRepository.ConvertModelToJS3Tree();
+            ViewBag.DbCount = nodeRepository.FindAll().ToList().Count;
+            if (jsTree3NodeManage.Count > 0)
+                return View(jsTree3NodeManage[0]);
+            else
+                return View(new JsTree3Node());
         }
 
         public ActionResult Table(string searchString)
